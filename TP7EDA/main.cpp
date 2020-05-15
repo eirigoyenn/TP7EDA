@@ -1,27 +1,14 @@
 #include <iostream>
-
-#include "lodepng.h"
+#include "Compresor.h"
 
 int main(void) {
 
-	unsigned char* img;
-	unsigned int w, h;
+	Compresor c;
 
-	lodepng_decode32_file(&img, &w, &h, "img.png");
-	
-	if (img != nullptr) {
+	c.decodeFile("imagen.png");
 
+	c.compress(c.img, c.w, c.h, "");
 
-		for (int i = 0; i < w * h; i++) {
-			
-			unsigned int c = 4 * i + 2;
-			img[c] = 255;
-
-		}
-
-		lodepng_encode32_file("nuevaimagen.png", img, w, h);
-		free(img);
-	}
-
+	cout << c.testing << endl;
 	return 0;
 }

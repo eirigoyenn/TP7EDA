@@ -5,25 +5,36 @@
 #include "lodepng.h"
 
 using namespace std;
+
+typedef struct {
+	unsigned int score;
+	unsigned char Rprom;
+	unsigned char Gprom;
+	unsigned char Bprom;
+} squareIteration;
+
 class Compresor {
 
 	enum {
-		RED,GREEN,BLUE
+		RINDEX,
+		GINDEX,
+		BINDEX
 	};
 
 public:
 	Compresor();
 	~Compresor();
 	bool decodeFile(string file);
-	bool compress();
-	unsigned char colorMax(char color,unsigned char* ,unsigned int w, unsigned int h);
+	bool compress(unsigned char* img, unsigned int w, unsigned int h, string res);
+	squareIteration iterateSquare(unsigned char* img, unsigned int w, unsigned int h);
 
-
-private:
 	unsigned char* img;
-	unsigned int w,h;
+	unsigned int w, h;
 	vector<string> files;
-	vector<char*> compFiles;
+	vector<string> compFiles;
+	string testing;
 	unsigned int threshold;
+private:
+
 
 };
