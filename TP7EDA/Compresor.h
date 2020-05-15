@@ -25,7 +25,7 @@ public:
 	Compresor();
 	~Compresor();
 	bool decodeFile(string file);
-	bool compress(unsigned char* img, unsigned int w, unsigned int h, string res);
+	void compress(unsigned char* img, unsigned int w, unsigned int h, string res);
 	squareIteration iterateSquare(unsigned char* img, unsigned int w, unsigned int h);
 
 	unsigned char* img;

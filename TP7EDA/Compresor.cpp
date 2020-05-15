@@ -5,7 +5,7 @@ Compresor::Compresor(){
 	img = nullptr;
 	w = 0;
 	h = 0;
-	threshold = 50;
+	threshold = 100000;
 }
 
 
@@ -27,7 +27,7 @@ bool Compresor::decodeFile(string file) {
 
 
 
-bool Compresor::compress(unsigned char* img, unsigned int w, unsigned int h, string res) {
+void Compresor::compress(unsigned char* img, unsigned int w, unsigned int h, string res) {
 
 	squareIteration sqi = iterateSquare(img, w, h);
 	

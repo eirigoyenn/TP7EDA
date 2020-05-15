@@ -5,7 +5,7 @@ int main(void) {
 
 	Compresor c;
 
-	c.decodeFile("imagen.png");
+	c.decodeFile("img.png");
 
 	c.compress(c.img, c.w, c.h, "");
 
