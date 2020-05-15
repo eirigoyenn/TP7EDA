@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <vector>
 #include <string>
+#include <fstream>
+
 #include "lodepng.h"
 
 using namespace std;
@@ -22,19 +24,22 @@ class Compresor {
 	};
 
 public:
+	
 	Compresor();
 	~Compresor();
-	bool decodeFile(string file);
-	void compress(unsigned char* img, unsigned int w, unsigned int h, string res);
-	squareIteration iterateSquare(unsigned char* img, unsigned int w, unsigned int h);
+	
+	bool compress(string file);
 
+private:
+
+	bool decodeFile(string file);
+	void generateCompressedFile(unsigned char* img, unsigned int w, unsigned int h, vector<char>& res);
+	squareIteration iterateSquare(unsigned char* img, unsigned int w, unsigned int h);
+	void outputFile();
 	unsigned char* img;
 	unsigned int w, h;
 	vector<string> files;
 	vector<string> compFiles;
-	string testing;
+	vector<char> compressdFile;
 	unsigned int threshold;
-private:
-
-
 };

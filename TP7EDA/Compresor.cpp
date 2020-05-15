@@ -5,7 +5,7 @@ Compresor::Compresor(){
 	img = nullptr;
 	w = 0;
 	h = 0;
-	threshold = 100000;
+	threshold = 0;
 }
 
 
@@ -13,11 +13,25 @@ Compresor::~Compresor() {
 	free(img);
 }
 
+
+bool Compresor::compress(string file) {
+
+	if (decodeFile(file)) {
+		generateCompressedFile(img, w, h, compressdFile);
+		outputFile();
+
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
 bool Compresor::decodeFile(string file) {
 
-	lodepng_decode32_file(&img, &w, &h, file.c_str());
+	unsigned char error = lodepng_decode32_file(&img, &w, &h, file.c_str());
 	
-	if (img == nullptr)
+	if (img == nullptr || error)
 		return false;
 
 	return true;
@@ -25,26 +39,31 @@ bool Compresor::decodeFile(string file) {
 }
 
 
-
-
-void Compresor::compress(unsigned char* img, unsigned int w, unsigned int h, string res) {
+void Compresor::generateCompressedFile(unsigned char* img, unsigned int w, unsigned int h, vector<char>& res) {
 
 	squareIteration sqi = iterateSquare(img, w, h);
 	
 	if (sqi.score <= threshold) {
-		testing += res + "0" + to_string(sqi.Rprom) + to_string(sqi.Gprom) + to_string(sqi.Bprom);
+		res.push_back(0);
+		res.push_back(sqi.Rprom);
+		res.push_back(sqi.Gprom);
+		res.push_back(sqi.Bprom);
 		return;
 	}
 
 	if (w == 1 || h == 1) {
-		testing += res + "0" + to_string(sqi.Rprom) + to_string(sqi.Gprom) + to_string(sqi.Bprom);
+		res.push_back(0);
+		res.push_back(sqi.Rprom);
+		res.push_back(sqi.Gprom);
+		res.push_back(sqi.Bprom);
 		return;
 	}
 
-	compress(img, w / 2, h / 2, res + "1");
-	compress(img + (w / 2) + 1, w / 2, h / 2, res + "1");
-	compress(img + ((w) * (h / 2)) + 1, w / 2, h / 2, res + "1");
-	compress(img + (w * (h / 2) + (w / 2)) + 1, w / 2, h / 2, res + "1");
+	res.push_back(1);
+	generateCompressedFile(img, w / 2, h / 2, res);
+	generateCompressedFile(img + (w / 2) + 1, w / 2, h / 2, res);
+	generateCompressedFile(img + ((w) * (h / 2)) + 1, w / 2, h / 2, res);
+	generateCompressedFile(img + (w * (h / 2) + (w / 2)) + 1, w / 2, h / 2, res);
 }
 
 
@@ -98,4 +117,13 @@ squareIteration Compresor::iterateSquare(unsigned char* img, unsigned int w, uns
 	res.Bprom = Bprom / (w * h);
 
 	return res;
+}
+
+void Compresor::outputFile() {
+	ofstream myfile;
+	myfile.open("compressedFile.EDA", ios_base::binary);
+	for (auto c : compressdFile) {
+		myfile << c;
+	}
+	myfile.close();
 }
