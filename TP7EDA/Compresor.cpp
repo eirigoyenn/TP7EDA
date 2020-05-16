@@ -1,11 +1,11 @@
 #include "Compresor.h"
-
+#include <iostream>
 Compresor::Compresor(){
 
 	img = nullptr;
 	w = 0;
 	h = 0;
-	threshold = 0;
+	threshold = 200;
 }
 
 
@@ -122,7 +122,10 @@ squareIteration Compresor::iterateSquare(unsigned char* img, unsigned int w, uns
 void Compresor::outputFile() {
 	ofstream myfile;
 	myfile.open("compressedFile.EDA", ios_base::binary);
+	cout <<"Winicial=" <<w << endl;
+	myfile << (int)w;                              
 	for (auto c : compressdFile) {
+		
 		myfile << c;
 	}
 	myfile.close();
