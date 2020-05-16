@@ -17,15 +17,17 @@ bool Descompresor::loadFile(const char* filename) {
 	file.open(filename, ios_base::binary);
 	char c = 0;
 	file.get(c);
-	char size[3];
+	char size[4];
 	size[0] = c;
 	file.get(c);
 	size[1] = c;
 	file.get(c);
 	size[2] = c;
+	file.get(c);
+	size[3] = c;
 	
-	int p=stoi(size);
-	std::cout << "  W="<< p<< endl;
+	int tam = *((int*)size);
+	std::cout << "  W="<< tam<< endl;
 
 	while (file.get(c)) {
 
