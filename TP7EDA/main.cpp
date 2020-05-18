@@ -13,6 +13,10 @@ int main(void) {
 
 	Descompresor desc;
 	
+	if (desc.decompress("img.png"))
+		cout << "OK" << endl;
+	else
+		cout << "FAILED" << endl;
 
 	return 0;
 }
