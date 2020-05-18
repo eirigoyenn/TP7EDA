@@ -5,7 +5,7 @@ Compresor::Compresor(){
 	img = nullptr;
 	w = 0;
 	h = 0;
-	threshold = 200;
+	threshold = 0;
 }
 
 
@@ -39,9 +39,9 @@ bool Compresor::decodeFile(string file) {
 }
 
 
-void Compresor::generateCompressedFile(unsigned char* img, unsigned int w, unsigned int h, vector<char>& res) {
+void Compresor::generateCompressedFile(unsigned char* img, unsigned int width, unsigned int height, vector<char>& res) {
 
-	squareIteration sqi = iterateSquare(img, w, h);
+	squareIteration sqi = iterateSquare(img, width, height);
 	
 	if (sqi.score <= threshold) {
 		res.push_back(0);
@@ -51,7 +51,7 @@ void Compresor::generateCompressedFile(unsigned char* img, unsigned int w, unsig
 		return;
 	}
 
-	if (w == 1 || h == 1) {
+	if (width == 1 || height == 1) {
 		res.push_back(0);
 		res.push_back(sqi.Rprom);
 		res.push_back(sqi.Gprom);
@@ -60,10 +60,10 @@ void Compresor::generateCompressedFile(unsigned char* img, unsigned int w, unsig
 	}
 
 	res.push_back(1);
-	generateCompressedFile(img, w / 2, h / 2, res);
-	generateCompressedFile(img + (w / 2) + 1, w / 2, h / 2, res);
-	generateCompressedFile(img + ((w) * (h / 2)) + 1, w / 2, h / 2, res);
-	generateCompressedFile(img + (w * (h / 2) + (w / 2)) + 1, w / 2, h / 2, res);
+	generateCompressedFile(img, width / 2, height / 2, res);
+	generateCompressedFile(img + 4*(width / 2), width / 2, height / 2, res);
+	generateCompressedFile(img + 4 * ((w) * (height / 2)), width / 2, height / 2, res);
+	generateCompressedFile(img + 4 * (w * (height / 2) + (width / 2)), width / 2, height / 2, res);
 }
 
 
@@ -82,33 +82,35 @@ squareIteration Compresor::iterateSquare(unsigned char* img, unsigned int w, uns
 	unsigned long Gprom = 0;
 	unsigned long Bprom = 0;
 	
-	for (int i = 0; i < w * h; i++) {
+	for (int i = 0; i <w; i++) {
+		for (int j = 0; j < h; j++) {
+			int offset = (j + i * this->w) * 4;
 
-		Rprom += img[4 * i + RINDEX];
-		Gprom += img[4 * i + GINDEX];
-		Bprom += img[4 * i + BINDEX];
+			Rprom += img[offset + RINDEX];
+			Gprom += img[offset + GINDEX];
+			Bprom += img[offset + BINDEX];
 
-		 if (img[4 * i + RINDEX] > Rmax){
-			 Rmax = img[4 * i + RINDEX];
-		 }
-		 else if (img[4 * i + RINDEX] < Rmin) {
-			 Rmin = img[4 * i + RINDEX];
-		 }
+			if (img[offset + RINDEX] > Rmax) {
+				Rmax = img[offset + RINDEX];
+			}
+			else if (img[offset + RINDEX] < Rmin) {
+				Rmin = img[offset + RINDEX];
+			}
 
-		if (img[4 * i + GINDEX] > Gmax) {
-			Gmax = img[4 * i + GINDEX];
+			if (img[offset + GINDEX] > Gmax) {
+				Gmax = img[offset + GINDEX];
+			}
+			else if (img[offset + GINDEX] < Gmin) {
+				Gmin = img[offset + GINDEX];
+			}
+
+			if (img[offset + BINDEX] > Bmax) {
+				Bmax = img[offset + BINDEX];
+			}
+			else if (img[offset + BINDEX] < Bmin) {
+				Bmin = img[offset + BINDEX];
+			}
 		}
-		else if (img[4 * i + GINDEX] < Gmin) {
-			Gmin = img[4 * i + GINDEX];
-		}
-
-		if (img[4 * i + BINDEX] > Bmax) {
-			Bmax = img[4 * i + BINDEX];
-		}
-		else if (img[4 * i + BINDEX] < Bmin) {
-			Bmin = img[4 * i + BINDEX];
-		}
-
 	}
 
 	res.score = Rmax + Gmax + Bmax - Rmin - Gmin - Bmin;

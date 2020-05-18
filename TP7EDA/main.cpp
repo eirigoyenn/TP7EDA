@@ -6,7 +6,7 @@ int main(void) {
 
 	Compresor c;
 
-	if (c.compress("img128.png"))
+	if (c.compress("Dados256.png"))
 		cout << "OK" << endl;
 	else
 		cout << "FAILED" << endl;
