@@ -6,6 +6,7 @@
 #include <string>
 #include <fstream>
 #include <math.h>
+#define ALPHA 255
 
 using namespace std;
 
@@ -21,19 +22,22 @@ public:
 
 	Descompresor();
 	~Descompresor();
-	bool decompress(string file);
-	bool loadFile(const char* file);
+	bool decompress(const char* file);
+	void getData(unsigned int pos,unsigned int side);
+	
 	int getSize(ifstream& file);
+	void writeData(unsigned int pos,unsigned int side, unsigned char red, unsigned char green, unsigned char blue);
 
 private:
 
-	//bool loadFile(string file);
 	//void generateDecompressedFile(unsigned char* img, unsigned int w, unsigned int h, vector<char>& res);
 	//void outputFile();
+	bool loadFile(const char* file);
 	unsigned char* img;
-	unsigned int w, h;
+	unsigned int w;
 	vector<char> decompressdFile;
-	
+	vector<unsigned  char>fileData;
+
 
 };
 

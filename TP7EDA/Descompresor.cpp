@@ -3,7 +3,7 @@
 Descompresor::Descompresor() {
 
 	w = 0;
-	h = 0;
+	
 	img = nullptr;
 
 }
@@ -19,12 +19,13 @@ bool Descompresor::loadFile(const char* filename) {
 	file.open(filename, ios_base::binary);
 
 	w = getSize(file);
-	h = w;
+	
+	cout << "Wquellega=" << w << endl;
+	fileData.resize(w * w * 4);
 	
 	char c = 0;
 	while (file.get(c)) {
 
-		std::cout << c ;
 		decompressdFile.push_back(c);
 
 	}
@@ -32,10 +33,32 @@ bool Descompresor::loadFile(const char* filename) {
 	return true;
 }
 
-bool Descompresor::decompress(string file) {
+bool Descompresor::decompress(const char* file) {
 
+	loadFile(file);
+	getData(0,w);
 
+	return true;
+}
 
+void Descompresor::getData(unsigned int pos,unsigned int side) {
+
+	decompressdFile[i]
+	if()
+
+}
+
+void Descompresor::writeData(unsigned int pos, unsigned int side, unsigned char red, unsigned char green,unsigned char blue) {
+
+	unsigned int i;
+	for (i = 0; i < (side * side); i++) {
+
+		fileData[pos + (4*i)] = red;
+		fileData[pos + (4 * i) + 1] = green;
+		fileData[pos + (4 * i) + 2] = blue;
+		fileData[pos + (4 * i) + 3] = ALPHA;
+
+	}
 
 }
 

@@ -12,7 +12,7 @@ int main(void) {
 		cout << "FAILED" << endl;
 
 	Descompresor desc;
-	desc.loadFile("compressedFile.EDA");
+	
 
 	return 0;
 }
