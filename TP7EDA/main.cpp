@@ -6,14 +6,14 @@ int main(void) {
 
 	Compresor c;
 
-	if (c.compress("img.png"))
+	if (c.compress("img128.png"))
 		cout << "OK" << endl;
 	else
 		cout << "FAILED" << endl;
 
 	Descompresor desc;
 	
-	if (desc.decompress("img.png"))
+	if (desc.decompress("compressedFile.EDA"))
 		cout << "OK" << endl;
 	else
 		cout << "FAILED" << endl;

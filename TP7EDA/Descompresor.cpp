@@ -21,8 +21,9 @@ bool Descompresor::loadFile(const char* filename) {
 	w = getSize(file);
 	
 	cout << "Wquellega=" << w << endl;
-	size = w * w * 4;
+	size = w * w*4;
 	fileData.resize(w * w * 4);
+	cout << fileData.size() << endl;
 	
 	char c = 0;
 	while (file.get(c)) {
@@ -63,17 +64,15 @@ void Descompresor::getData(unsigned int pos,unsigned int side) {
 		decompressdFile.erase(decompressdFile.begin());
 		writeData(pos, side, red, green, blue);
 			return;
-	}
-
-	if (value == 1) {
+	} else if (value == 1) {
 		getData(pos, side / 2);
-		getData(pos + (side / 2) + 1, side / 2);
-		getData(pos + ((side) * (side / 2)) + 1, side / 2);
-		getData(pos + (side * (side / 2) + (side / 2)) + 1, side / 2);
+		getData(pos + 4*((side / 2) + 1), side / 2);
+		getData(pos + 4*(((side) * (side / 2)) + 1), side / 2);
+		getData(pos + 4*((side * (side / 2) + (side / 2)) + 1), side / 2);
 	}
 }
 
-void Descompresor::writeData(unsigned int pos, unsigned int side, unsigned char red, unsigned char green,unsigned char blue) {
+void Descompresor::writeData(unsigned int pos, unsigned int side, unsigned char red, unsigned char green ,unsigned char blue) {
 
 	unsigned int i;
 	for (i = 0; i < (side * side); i++) {
