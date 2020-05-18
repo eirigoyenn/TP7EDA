@@ -21,8 +21,9 @@ public:
 
 	Descompresor();
 	~Descompresor();
-	//bool decompress(string file);
+	bool decompress(string file);
 	bool loadFile(const char* file);
+	int getSize(ifstream& file);
 
 private:
 

@@ -123,21 +123,28 @@ void Compresor::outputFile() {
 	ofstream myfile;
 	myfile.open("compressedFile.EDA", ios_base::binary);
 	cout <<"Winicial=" <<w << endl;
-	unsigned int* width = &w;
-	unsigned char temp;
-	temp = *((char*)width);
-	myfile << temp;
-	temp = *((char*)width+1);
-	myfile << temp;
-	temp = *((char*)width+2);
-	myfile << temp;
-	temp = *((char*)width+3);
-	myfile << temp;
 	
+	saveSize(myfile);
 	
 	for (auto c : compressdFile) {
 		
 		myfile << c;
 	}
 	myfile.close();
+}
+
+
+void Compresor::saveSize(ofstream& myfile) {
+
+	unsigned int* width = &w;
+	unsigned char temp;
+	temp = *((char*)width);
+	myfile << temp;
+	temp = *((char*)width + 1);
+	myfile << temp;
+	temp = *((char*)width + 2);
+	myfile << temp;
+	temp = *((char*)width + 3);
+	myfile << temp;
+
 }

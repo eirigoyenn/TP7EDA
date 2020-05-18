@@ -29,6 +29,7 @@ public:
 	~Compresor();
 	
 	bool compress(string file);
+	void saveSize(std::ofstream& myfile);
 
 private:
 
