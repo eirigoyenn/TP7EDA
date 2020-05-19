@@ -28,7 +28,7 @@ public:
 	Compresor();
 	~Compresor();
 	
-	bool compress(string file);
+	bool compress(string file, unsigned int th);
 	void saveSize(std::ofstream& myfile);
 
 private:
@@ -39,8 +39,6 @@ private:
 	void outputFile();
 	unsigned char* img;
 	unsigned int w, h;
-	vector<string> files;
-	vector<string> compFiles;
 	vector<char> compressdFile;
 	unsigned int threshold;
 };

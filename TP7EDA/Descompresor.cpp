@@ -1,15 +1,10 @@
 #include "Descompresor.h"
 
 Descompresor::Descompresor() {
-
 	w = 0;
-	
 	img = nullptr;
-
 }
 Descompresor::~Descompresor() {
-
-
 
 }
 
@@ -20,55 +15,52 @@ bool Descompresor::loadFile(const char* filename) {
 
 	w = getSize(file);
 	
-	cout << "Wquellega=" << w << endl;
-	size = w * w*4;
 	fileData.resize(w * w * 4);
-	cout << fileData.size() << endl;
 	
 	char c = 0;
-	while (file.get(c)) {
-
-		decompressdFile.push_back(c);
-
-	}
+	while (file.get(c))
+		decompressedList.push_back(c);
 
 	return true;
 }
 
 bool Descompresor::decompress(const char* file) {
-
 	bool result = true;
-
 	loadFile(file);
-	getData(0,w);
+	generateImage(0, w);
 	result = output();
 
 	return result;
 }
 
-void Descompresor::getData(unsigned int pos, unsigned int side) {
+void Descompresor::generateImage(unsigned int pos, unsigned int side) {
 
 	if (side == 0) {
 		return;
 	}
 	
-	unsigned char value = decompressdFile.front();
-	decompressdFile.erase(decompressdFile.begin());
 	
+
+	//unsigned char value = decompressdFile.front();
+	//decompressdFile.erase(decompressdFile.begin());
+	unsigned char value = decompressedList.front();
+	decompressedList.pop_front();
+
 	if (value == 0) {
-		unsigned char red = decompressdFile.front();
-		decompressdFile.erase(decompressdFile.begin());
-		unsigned char green = decompressdFile.front();
-		decompressdFile.erase(decompressdFile.begin());
-		unsigned char blue = decompressdFile.front();
-		decompressdFile.erase(decompressdFile.begin());
+		unsigned char red = decompressedList.front();
+		decompressedList.pop_front();
+		unsigned char green = decompressedList.front();
+		decompressedList.pop_front();
+		unsigned char blue = decompressedList.front();
+		decompressedList.pop_front();
 		writeData(pos, side, red, green, blue);
-			return;
+		return;
+
 	} else if (value == 1) {
-		getData(pos, side / 2);
-		getData(pos + 4 * (side / 2), side / 2);
-		getData(pos + 4 * (w * (side / 2)), side / 2);
-		getData(pos + 4 * (w * (side / 2) + (side / 2)), side / 2);
+		generateImage(pos, side / 2);
+		generateImage(pos + 4 * (side / 2), side / 2);
+		generateImage(pos + 4 * (w * (side / 2)), side / 2);
+		generateImage(pos + 4 * (w * (side / 2) + (side / 2)), side / 2);
 	}
 }
 
@@ -81,29 +73,17 @@ void Descompresor::writeData(unsigned int pos, unsigned int side, unsigned char 
 			fileData[pos + offset] = red;
 			fileData[pos + offset + 1] = green;
 			fileData[pos + offset + 2] = blue;
-			fileData[pos + offset + 3] = 255;
+			fileData[pos + offset + 3] = ALPHA;
 		}
 	}
 }
 
 bool Descompresor::output() {
 	bool result = true;
-	unsigned char* image = (unsigned char *) malloc(fileData.size()* (sizeof(unsigned char)));
-	
-	if (image == nullptr) {
+	unsigned char error = lodepng_encode32_file("imagenNueva.png", fileData.data(), w, w);
+	if (error)
 		result = false;
-		cout << "MALLOC FAIL" << endl;
-		return result;
-	}
 
-	for (unsigned int i = 0; i < fileData.size(); i++) {
-		image[i] = fileData[i];
-	}
-	const unsigned char filename[11] = "imagen.png";
-
-	lodepng_encode32_file("imagenNueva.png", image, w, w);
-
-	free(image);
 	return result;
 }
 

@@ -6,15 +6,15 @@ int main(void) {
 
 	Compresor c;
 
-	if (c.compress("Dados256.png"))
-		cout << "OK" << endl;
+	if (c.compress("imagenfuego.png", 10))
+		cout << "Compressed OK" << endl;
 	else
 		cout << "FAILED" << endl;
 
 	Descompresor desc;
 	
 	if (desc.decompress("compressedFile.EDA"))
-		cout << "OK" << endl;
+		cout << "Decompressed OK" << endl;
 	else
 		cout << "FAILED" << endl;
 

@@ -1,7 +1,6 @@
 #include "Compresor.h"
 #include <iostream>
 Compresor::Compresor(){
-
 	img = nullptr;
 	w = 0;
 	h = 0;
@@ -14,8 +13,8 @@ Compresor::~Compresor() {
 }
 
 
-bool Compresor::compress(string file) {
-
+bool Compresor::compress(string file, unsigned int th) {
+	threshold = th;
 	if (decodeFile(file)) {
 		generateCompressedFile(img, w, h, compressdFile);
 		outputFile();
@@ -124,7 +123,6 @@ squareIteration Compresor::iterateSquare(unsigned char* img, unsigned int w, uns
 void Compresor::outputFile() {
 	ofstream myfile;
 	myfile.open("compressedFile.EDA", ios_base::binary);
-	cout <<"Winicial=" <<w << endl;
 	
 	saveSize(myfile);
 	
@@ -148,5 +146,4 @@ void Compresor::saveSize(ofstream& myfile) {
 	myfile << temp;
 	temp = *((char*)width + 3);
 	myfile << temp;
-
 }
